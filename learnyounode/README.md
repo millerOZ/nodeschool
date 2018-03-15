@@ -67,7 +67,7 @@ fs.readdir(url,function(err,files){
 	if(err){ return console.error(err)}
 
 	files.forEach(function(file){
-		if(path.extname(file) === ext){   /* comprobar para filtrar por su ext*/
+		if(path.extname(file) === ext){   /*extname devuelve ext del archivo comprobar para filtrar por su ext*/
 			console.log(file);
 		}
 	});
@@ -112,30 +112,28 @@ var fs = require('fs');
 var path = require('path');
 
 module.exports = function (dir,filter, cb){
-    fs.readdir(dir,function (err,list){
+    fs.readdir(dir,function (err,array){
 
         if(err){
-        	return cb(err)
+        	return cb(err) //devuelve errores en el callback
         }
-
-        list = list.filter(function(file){
+        array = array.filter(function(file){
             return path.extname(file) === '.' + filter;
         })
-
-        cb(null,list);
+        cb(null,array);
     })
 }
 ```
 ```javascript
 const filterFn = require('./mymodule');
 const dir = process.argv[2];
-const filterStr = process.argv[3];
+const filter = process.argv[3];
 
-filterFn(dir, filterStr, function(err, list){
+filterFn(dir, filter, function(err, array){
 	  if(err){
 	    return console.error("There was an error: ", err);
 	  }
-	  list.forEach(function(file){
+	  array.forEach(function(file){
 	    console.log(file);
 	  })
 })
@@ -152,7 +150,7 @@ const http = require('http');
 var url = process.argv[2];
 
 http.get(url, function(res){
-	res.setEncoding('utf8')
+	res.setEncoding('utf8') //convierte la data recibida a String
 	res.on('data', function(data){
 		console.log(data)
 	})
@@ -176,7 +174,7 @@ var bl = require('bl');
 const url = process.argv[2];
 
 http.get(url,function(res){
-	re
+
 	res.pipe(bl(function(err,data){
 		if(err){
 			return console.err(err)
