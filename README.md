@@ -1,2 +1,2 @@
 ## nodeschool
-* [learnyounode](learnyounode/README.md)
+* [puntos de learnyounode ](learnyounode/README.md)
