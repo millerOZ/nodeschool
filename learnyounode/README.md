@@ -24,7 +24,7 @@ for(var i = 2; i < process.argv.length; i++){
 }
 console.log(contador)
 ```
-3.) _MY FIRST I/O_
+3. _MY FIRST I/O_
 >Escribe un programa que, usando una llamada síncrona al sistema de  archivos, lea un archivo recibido por argumento e imprima a consola la cantidad de saltos de línea ('\n') que contiene. Similar a ejecutar _cat file | wc -l._  
 El programa recibirá la ruta al archivo como único argumento.  
 
@@ -36,7 +36,7 @@ var text = buffer.toString(); // se convierte a String para detectar '\n' los sa
 
 console.log(text.split('\n').length -1);
 ```
-4). MY FIRST ASYNC I/0
+4. MY FIRST ASYNC I/0
 
 ```javascript
 
