@@ -1,10 +1,11 @@
 
 
-1. HELLO WORLD
+1. ### HELLO WORLD ###
 ```javascript
+'use strict'
 console.log("HELLO WORLD")
 ```
-1. BABY STEPS
+2. BABY STEPS
 >  Escribe un programa que reciba uno o más números como argumentos de la consola e imprima la suma de dichos números a consola(stdout).
 
 _process:_ objecto global de __nodejs__, _argv_ es una propiedad de process que es un array
@@ -13,27 +14,37 @@ _process:_ objecto global de __nodejs__, _argv_ es una propiedad de process que 
 
 >  La salida estándar a consola será algo parecido a:  
 
-  [ 'node', '/path/to/your/program.js', '1', '2', '3' ]  
+_[ 'node', '/path/to/your/program.js', '1', '2', '3' ]_
 
 ```javascript
-
-var contador = 0
-
-for(var i = 2; i < process.argv.length; i++){
-	contador += Number(process.argv[i]);
+'use strict'
+var numeroLineas = function(){
+  var contador = 0
+/*  El primer elemento de la lista siempre es
+  'node', el segundo es la ruta al program.js; por ende, debes comenzar a
+  iterar en el tercer elemento (índice 2 de la lista)*/
+  for(var i = 2; i < process.argv.length; i++){
+  	contador += Number(process.argv[i]);
+  }
+  return contador;
 }
-console.log(contador)
+console.log(numeroLineas())
 ```
 3. _MY FIRST I/O_
 >Escribe un programa que, usando una llamada síncrona al sistema de  archivos, lea un archivo recibido por argumento e imprima a consola la cantidad de saltos de línea ('\n') que contiene. Similar a ejecutar _cat file | wc -l._  
 El programa recibirá la ruta al archivo como único argumento.  
 
 ```javascript
+'use strict';
 var fs = require('fs');
-//buffer esta en un formato eficiente como es ASCII, binario,UTF-8.
-var buffer = fs.readFileSync(process.argv[2]);
-var text = buffer.toString(); // se convierte a String para detectar '\n' los saltos de linea
-console.log(text.split('\n').length -1);
+var file = process.argv[2];
+var llamadaSincronica = function(file){
+	let buffer = fs.readFileSync(file,'utf8');
+	let saltosLinea = buffer.split('\n').length -1;
+
+	return saltosLinea;
+}
+console.log(llamadaSincronica(file));
 ```
 4. MY FIRST ASYNC I/0
 > Escribe un programa que use operación de sistema de archivos asíncrona para leer un archivo e imprimir en consola el número de saltos de línea  
@@ -41,12 +52,23 @@ console.log(text.split('\n').length -1);
    El programa recibirá la ruta al archivo como único argumento.
 
 ```javascript
+'use strict';
 var fs = require('fs');
-fs.readFile(process.argv[2],'utf-8', function(err, data){
-	if(err){return console.log(err)}
-	console.log(data.split('\n').length -1);
-})
+const files = process.argv[2];
 
+var fileasyn = function(file){
+ if(file != null){
+    fs.readFile(file,'utf-8',function(err,data){
+       if(err){
+       		return console.log(err);
+       	}
+       return console.log(data.split('\n').length -1);
+    });
+  }else{
+  	console.log("Error archivo null")
+  }
+}
+fileasyn(files);
 ```
 5. FILTERED LS
 >  Crea un programa que dado un directorio imprima una lista de archivos  
@@ -127,7 +149,7 @@ module.exports = function (dir,filter, cb){
 ```javascript
 const filterFn = require('./mymodule');
 const dir = process.argv[2];
-const filter = process.argv[3];
+const filter = process.argv[3];//ext del archivo a filtrar
 
 filterFn(dir, filter, function(err, array){
 	  if(err){
