@@ -52,13 +52,23 @@ console.log(llamadaSincronica(file));
    El programa recibirá la ruta al archivo como único argumento.
 
 ```javascript
+'use strict';
 var fs = require('fs');
-if(process.argv[2] == null)
-fs.readFile(process.argv[2],'utf-8', function(err, data){
-	if(err){return console.log(err)}
-	console.log(data.split('\n').length -1);
-})
+const files = process.argv[2];
 
+var fileasyn = function(file){
+ if(file != null){
+    fs.readFile(file,'utf-8',function(err,data){
+       if(err){
+       		return console.log(err);
+       	}
+       return console.log(data.split('\n').length -1);
+    });
+  }else{
+  	console.log("Error archivo null")
+  }
+}
+fileasyn(files);
 ```
 5. FILTERED LS
 >  Crea un programa que dado un directorio imprima una lista de archivos  
