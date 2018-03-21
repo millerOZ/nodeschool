@@ -1,6 +1,6 @@
 
 
-1.  HELLO WORLD 
+1.  HELLO WORLD
 ```javascript
 'use strict'
 console.log("HELLO WORLD")
@@ -296,7 +296,7 @@ server.listen(process.argv[2])
 ```
 12.UPPERCASE HTTP
 >   
-  Escribe un servidor HTTP que reciba sólo peticiones POST y convierta los  
+Escribe un servidor HTTP que reciba sólo peticiones POST y convierta los  
   caracteres del cuerpo de la petición a mayúsculas y lo devuelva al  
   cliente.  
   El servidor deberá escuchar en un puerto cuyo número será el primer  
@@ -315,4 +315,65 @@ server = http.createServer(function(req, res){
 	}
 });
 server.listen(process.argv[2]);
+```
+13. JSON API SERVER
+>  Escribe un servidor de HTTP que sirva datos en formato JSON cuando reciba  
+  una petición GET con la ruta (endpoint) '/api/parsetime'. Asume que la  
+  petición tiene un parámetro 'iso' cuyo valor es un fecha hora en formato  
+  ISO.  
+
+>  Por ejemplo:  
+
+>  /api/parsetime?iso=2013-08-10T12:10:15.474Z  
+
+>  La respuesta JSON debe contener únicamente los propiedades 'hour',  
+  'minute' y 'second' correspondientes a la fecha recibida. Ejemplo:  
+
+>     {  
+       "hour": 14,  
+       "minute": 23,  
+       "second": 15  
+     }  
+
+>  Luego, agrega un segundo endpoint con ruta '/api/unixtime' que reciba los  
+  mismos parámetros que la anterior pero que devuelva la fecha en formato  
+  UNIX, por ejemplo:  
+
+>   {  
+         "unixtime": 1376136615474  
+     }  
+
+>  El servidor deberá escuchar en un puerto cuyo número será el primer  
+  argumento del programa.
+
+
+```javascript
+"use strict";
+var url = require('url')
+var http = require('http')
+var parsedUrl = url.parse(req.url, true)
+var time = new Date(parsedUrl.query.iso)
+var path = url.parse(req.url).pathname;
+
+var server = http.createServer(function(req, res){
+
+	if(req.method === 'GET'){
+		 res.writeHead(200, {'Content-Type': 'application/json'})
+
+		 if(path === '/api/parsetime'){
+			 	var parseTime = {
+				"hour": time.getHours(),
+			  "minute": time.getMinutes(),
+			  "second": time.getSeconds()
+			  }
+				 res.end(JSON.stringify(parseTime))
+			}else if(path === '/api/unixtime'){
+				var unixTime = {
+					"unixtime":time.getTime()
+				}
+				res.end(JSON.stringify(unixTime))
+			}
+		}
+});
+server.listen(process.argv[2])
 ```
